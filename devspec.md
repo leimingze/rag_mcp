@@ -949,3 +949,466 @@ smart-knowledge-hub/
 └── README.md                            # 项目说明
 
 
+# 项目开发排期
+
+> **规格驱动开发 (SDD) 计划**
+> 基于本详细技术规格文档制定
+> 最后更新: 2026-02-20
+
+---
+
+## 项目概述
+
+**目标**: 构建一个可扩展、高可观测、易迭代的 RAG + MCP 智能问答与知识检索框架
+
+**技术栈**: Python + LangChain/LangGraph + MCP Protocol + Chroma + 多种 LLM/Embedding
+
+**预计总工时**: 约 80-120 小时（个人开发）
+
+---
+
+## 开发原则
+
+1. **规格驱动**: 严格按照本文档执行，不偏离设计
+2. **测试驱动 (TDD)**: 每个模块先写测试，再写实现
+3. **接口优先**: 先定义抽象接口，再实现具体类
+4. **渐进增强**: 每个阶段产生可运行的增量版本
+5. **可观测优先**: 从第一天开始就记录 trace
+
+---
+
+## 阶段划分
+
+### 📋 阶段 0: 项目基础设施 (Day 1)
+
+**目标**: 搭建项目骨架，配置开发环境
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| 创建目录结构 | 按规格创建完整目录 | 1h | 所有目录存在 |
+| 配置项目管理 | pyproject.toml, requirements.txt | 1h | 可pip install |
+| 配置文件 | config/settings.yaml (模板) | 1h | 结构符合spec |
+| 测试框架 | pytest配置, tests/fixtures/ | 1h | pytest可运行 |
+
+**里程碑 M0**: `python -m pytest` 可正常运行
+
+---
+
+### 🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)
+
+**目标**: 实现所有核心抽象层和工厂模式
+
+#### 1.1 核心数据类型 (优先级: 最高)
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| 配置加载器 | src/core/settings.py | 2h | 可加载YAML |
+| 核心类型定义 | src/core/types.py | 2h | Document/Chunk类可用 |
+| 单元测试 | tests/unit/test_settings.py, test_types.py | 2h | 测试通过 |
+
+#### 1.2 LLM 抽象 (优先级: 高)
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| LLM抽象基类 | src/libs/llm/base_llm.py | 2h | chat()方法定义 |
+| Vision LLM抽象 | src/libs/llm/base_vision_llm.py | 1h | 支持图片输入 |
+| LLM工厂 | src/libs/llm/llm_factory.py | 1h | 根据config实例化 |
+| Azure OpenAI实现 | src/libs/llm/azure_llm.py | 3h | 可调用GPT-4 |
+| OpenAI实现 | src/libs/llm/openai_llm.py | 2h | 可调用OpenAI |
+| Azure Vision实现 | src/libs/llm/azure_vision_llm.py | 3h | 可识别图片 |
+| 单元测试 | tests/unit/test_*llm.py | 3h | Mock测试通过 |
+
+#### 1.3 Embedding 抽象 (优先级: 高)
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Embedding抽象 | src/libs/embedding/base_embedding.py | 1h | embed()方法定义 |
+| Embedding工厂 | src/libs/embedding/embedding_factory.py | 1h | 根据config实例化 |
+| OpenAI实现 | src/libs/embedding/openai_embedding.py | 2h | 可生成向量 |
+| 单元测试 | tests/unit/test_*embedding.py | 2h | 测试通过 |
+
+#### 1.4 VectorStore 抽象 (优先级: 高)
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| VectorStore抽象 | src/libs/vector_store/base_vector_store.py | 2h | upsert/query方法 |
+| VectorStore工厂 | src/libs/vector_store/vector_store_factory.py | 1h | 根据config实例化 |
+| Chroma实现 | src/libs/vector_store/chroma_store.py | 4h | 可存储/检索向量 |
+| 单元测试 | tests/unit/test_chroma_store.py | 2h | 测试通过 |
+
+#### 1.5 Splitter 抽象 (优先级: 中)
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Splitter抽象 | src/libs/splitter/base_splitter.py | 1h | split()方法定义 |
+| Splitter工厂 | src/libs/splitter/splitter_factory.py | 1h | 根据config实例化 |
+| Recursive实现 | src/libs/splitter/recursive_splitter.py | 3h | 可切分Markdown |
+| 单元测试 | tests/unit/test_recursive_splitter.py | 2h | 测试通过 |
+
+#### 1.6 Reranker 抽象 (优先级: 中)
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Reranker抽象 | src/libs/reranker/base_reranker.py | 1h | rerank()方法定义 |
+| Reranker工厂 | src/libs/reranker/reranker_factory.py | 1h | 根据config实例化 |
+| None实现 | src/libs/reranker/none_reranker.py | 1h | 返回原排序 |
+| 单元测试 | tests/unit/test_*reranker.py | 2h | 测试通过 |
+
+#### 1.7 Loader 抽象 (优先级: 中)
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Loader抽象 | src/libs/loader/base_loader.py | 1h | load()方法定义 |
+| 文件完整性检查 | src/libs/loader/file_integrity.py | 2h | SHA256哈希 |
+| PDF Loader | src/libs/loader/pdf_loader.py | 4h | MarkItDown集成 |
+| 单元测试 | tests/unit/test_pdf_loader.py | 2h | 测试通过 |
+
+**里程碑 M1**: 所有 Libs 层模块通过单元测试，工厂模式可正确实例化
+
+---
+
+### 📥 阶段 2: Ingestion Pipeline (Day 6-9)
+
+**目标**: 实现离线数据摄取流程
+
+#### 2.1 Chunking 模块
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Document Chunker | src/ingestion/chunking/document_chunker.py | 3h | Document→Chunks |
+| 单元测试 | tests/unit/test_document_chunker.py | 2h | 测试通过 |
+
+#### 2.2 Transform 模块
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Transform抽象 | src/ingestion/transform/base_transform.py | 1h | transform()方法 |
+| Chunk Refiner | src/ingestion/transform/chunk_refiner.py | 3h | LLM重写chunk |
+| Metadata Enricher | src/ingestion/transform/metadata_enricher.py | 3h | 提取title/summary |
+| Image Captioner | src/ingestion/transform/image_captioner.py | 4h | Vision LLM描述图片 |
+| 单元测试 | tests/unit/test_transform*.py | 3h | Mock测试通过 |
+
+#### 2.3 Embedding 模块
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Dense Encoder | src/ingestion/embedding/dense_encoder.py | 2h | 调用Embedding API |
+| Sparse Encoder | src/ingestion/embedding/sparse_encoder.py | 3h | BM25编码 |
+| Batch Processor | src/ingestion/embedding/batch_processor.py | 2h | 批处理优化 |
+| 单元测试 | tests/unit/test_*encoder.py | 2h | 测试通过 |
+
+#### 2.4 Storage 模块
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Vector Upserter | src/ingestion/storage/vector_upserter.py | 3h | 批量upsert |
+| BM25 Indexer | src/ingestion/storage/bm25_indexer.py | 3h | 构建倒排索引 |
+| Image Storage | src/ingestion/storage/image_storage.py | 2h | 图片文件存储 |
+| 单元测试 | tests/unit/test_*storage.py | 2h | 测试通过 |
+
+#### 2.5 Pipeline 主流程
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Pipeline | src/ingestion/pipeline.py | 4h | 编排全流程 |
+| Document Manager | src/ingestion/document_manager.py | 2h | list/delete |
+| 摄取脚本 | scripts/ingest.py | 1h | CLI入口 |
+| 集成测试 | tests/integration/test_ingestion_pipeline.py | 3h | 端到端测试 |
+
+**里程碑 M2**: 可执行 `python scripts/ingest.py` 导入PDF文档
+
+---
+
+### 🔍 阶段 3: Query Engine (Day 10-13)
+
+**目标**: 实现混合检索引擎
+
+#### 3.1 Query Processor
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Query Processor | src/core/query_engine/query_processor.py | 3h | 关键词提取/查询扩展 |
+| 单元测试 | tests/unit/test_query_processor.py | 2h | 测试通过 |
+
+#### 3.2 Retrieval 模块
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Dense Retriever | src/core/query_engine/dense_retriever.py | 3h | 向量检索 |
+| Sparse Retriever | src/core/query_engine/sparse_retriever.py | 3h | BM25检索 |
+| Fusion (RRF) | src/core/query_engine/fusion.py | 3h | RRF融合 |
+| Hybrid Search | src/core/query_engine/hybrid_search.py | 4h | 编排检索流程 |
+| 单元测试 | tests/unit/test_*retriever.py, test_fusion.py | 3h | 测试通过 |
+| 集成测试 | tests/integration/test_hybrid_search.py | 2h | 端到端测试 |
+
+#### 3.3 Reranker 模块
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Reranker实现 | src/core/query_engine/reranker.py | 2h | 调用Reranker抽象 |
+| 单元测试 | tests/unit/test_reranker_fallback.py | 2h | 回退测试通过 |
+
+**里程碑 M3**: 可执行 `python scripts/query.py` 进行检索
+
+---
+
+### 📤 阶段 4: Response & Trace (Day 14-15)
+
+**目标**: 实现响应构建和追踪
+
+#### 4.1 Response 模块
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Citation Generator | src/core/response/citation_generator.py | 2h | 生成引用 |
+| Multimodal Assembler | src/core/response/multimodal_assembler.py | 3h | 组装图文 |
+| Response Builder | src/core/response/response_builder.py | 3h | 构建最终响应 |
+| 单元测试 | tests/unit/test_response_builder.py | 2h | 测试通过 |
+
+#### 4.2 Trace 模块
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Trace Context | src/core/trace/trace_context.py | 3h | 记录阶段 |
+| Trace Collector | src/core/trace/trace_collector.py | 2h | JSON Lines输出 |
+| 单元测试 | tests/unit/test_trace_context.py, test_jsonl_logger.py | 2h | 测试通过 |
+
+**里程碑 M4**: 查询结果包含完整引用和trace
+
+---
+
+### 📊 阶段 5: Observability 基础 (Day 16-17)
+
+**目标**: 实现日志和评估基础
+
+#### 5.1 Logger 模块
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| 结构化Logger | src/observability/logger.py | 2h | JSON Formatter |
+
+#### 5.2 Evaluation 模块
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Evaluator抽象 | src/libs/evaluator/base_evaluator.py | 1h | evaluate()方法 |
+| Evaluator工厂 | src/libs/evaluator/evaluator_factory.py | 1h | 根据config实例化 |
+| Ragas实现 | src/libs/evaluator/ragas_evaluator.py | 3h | Ragas集成 |
+| Custom实现 | src/libs/evaluator/custom_evaluator.py | 2h | 自定义指标 |
+| Composite Evaluator | src/observability/evaluation/composite_evaluator.py | 2h | 多评估器组合 |
+| Eval Runner | src/observability/evaluation/eval_runner.py | 2h | 执行评估 |
+| 评估脚本 | scripts/evaluate.py | 1h | CLI入口 |
+
+**里程碑 M5**: 可执行 `python scripts/evaluate.py` 运行评估
+
+---
+
+### 🔌 阶段 6: MCP Server (Day 18-20)
+
+**目标**: 实现 MCP 协议层
+
+#### 6.1 MCP 核心模块
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Protocol Handler | src/mcp_server/protocol_handler.py | 4h | JSON-RPC 2.0处理 |
+| Server入口 | src/mcp_server/server.py | 2h | Stdio Transport |
+| main.py | main.py | 1h | 启动入口 |
+
+#### 6.2 MCP Tools
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| query_knowledge_hub | src/mcp_server/tools/query_knowledge_hub.py | 3h | 主检索工具 |
+| list_collections | src/mcp_server/tools/list_collections.py | 2h | 列集合工具 |
+| get_document_summary | src/mcp_server/tools/get_document_summary.py | 2h | 文档摘要工具 |
+| 单元测试 | tests/unit/test_*tools.py | 2h | 测试通过 |
+| 集成测试 | tests/integration/test_mcp_server.py | 3h | MCP协议测试 |
+
+**里程碑 M6**: 可作为 MCP Server 启动，响应 tools/list 和 tools/call
+
+---
+
+### 🖥️ 阶段 7: Dashboard (Day 21-24)
+
+**目标**: 实现 Streamlit 可视化面板
+
+#### 7.1 Dashboard Services
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Trace Service | src/observability/dashboard/services/trace_service.py | 2h | 读取traces.jsonl |
+| Data Service | src/observability/dashboard/services/data_service.py | 2h | 读取向量库 |
+| Config Service | src/observability/dashboard/services/config_service.py | 1h | 读取配置 |
+
+#### 7.2 Dashboard Pages (并行开发)
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| Overview | src/observability/dashboard/pages/overview.py | 2h | 系统总览 |
+| Data Browser | src/observability/dashboard/pages/data_browser.py | 3h | 数据浏览 |
+| Ingestion Manager | src/observability/dashboard/pages/ingestion_manager.py | 3h | 摄取管理 |
+| Ingestion Traces | src/observability/dashboard/pages/ingestion_traces.py | 2h | 摄取追踪 |
+| Query Traces | src/observability/dashboard/pages/query_traces.py | 2h | 查询追踪 |
+| Evaluation Panel | src/observability/dashboard/pages/evaluation_panel.py | 3h | 评估面板 |
+
+#### 7.3 Dashboard App
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| App入口 | src/observability/dashboard/app.py | 2h | 页面导航 |
+| 启动脚本 | scripts/start_dashboard.py | 1h | CLI入口 |
+
+**里程碑 M7**: 可执行 `python scripts/start_dashboard.py` 打开面板
+
+---
+
+### ✅ 阶段 8: 测试与优化 (Day 25-27)
+
+**目标**: 完善测试覆盖，性能优化
+
+#### 8.1 E2E 测试
+
+| 任务 | 文件 | 工时 | 验收标准 |
+|------|------|------|----------|
+| 数据摄取E2E | tests/e2e/test_data_ingestion.py | 3h | 完整流程 |
+| 召回E2E | tests/e2e/test_recall.py | 2h | 召回测试 |
+| MCP Client | tests/e2e/test_mcp_client.py | 3h | 模拟客户端 |
+
+#### 8.2 优化与文档
+
+| 任务 | 工时 | 验收标准 |
+|------|------|----------|
+| 性能优化 | 4h | 满足性能指标 |
+| README完善 | 2h | 文档完整 |
+| 配置示例 | 1h | 提供示例配置 |
+
+**里程碑 M8**: 所有测试通过，文档完整
+
+---
+
+## Skills 创建计划
+
+### Skill 1: `/rag-test` (在阶段1完成后创建)
+
+**用途**: 封装测试相关工作流
+
+**功能**:
+- 运行单元测试: `pytest tests/unit/`
+- 运行集成测试: `pytest tests/integration/`
+- 运行E2E测试: `pytest tests/e2e/`
+- 运行所有测试: `pytest`
+- 生成覆盖率报告: `pytest --cov`
+
+### Skill 2: `/rag-ingest` (在阶段2完成后创建)
+
+**用途**: 封装数据摄取工作流
+
+**功能**:
+- 导入单个文档: `python scripts/ingest.py --file xxx.pdf`
+- 导入目录: `python scripts/ingest.py --dir ./data/documents/`
+- 列出已导入文档: 调用 document_manager
+- 删除文档: 调用 document_manager
+- 查看摄取历史: 读取 traces.jsonl
+
+### Skill 3: `/rag-query` (在阶段3完成后创建)
+
+**用途**: 封装查询测试工作流
+
+**功能**:
+- 执行查询: `python scripts/query.py --query "xxx"`
+- 指定top-k: `python scripts/query.py --query "xxx" --top-k 10`
+- 查看trace详情: 读取 traces.jsonl
+- 对比不同检索策略
+
+### Skill 4: `/rag-eval` (在阶段5完成后创建)
+
+**用途**: 封装评估工作流
+
+**功能**:
+- 运行完整评估: `python scripts/evaluate.py`
+- 指定评估集: `python scripts/evaluate.py --dataset xxx.json`
+- 生成评估报告: HTML/PDF报告
+- 对比历史评估结果
+
+---
+
+## 依赖关系总览
+
+```
+阶段0 (基础设施)
+    │
+    ▼
+阶段1 (Libs层) ←─ 可并行开发7个子模块
+    │
+    ├─┬─► 阶段2 (Ingestion)  依赖: LLM, Embedding, VectorStore, Splitter, Loader
+    │ │
+    │ └─┬─► 阶段3 (Query Engine)  依赖: Embedding, VectorStore, Reranker
+    │   │
+    │   └─┬─► 阶段4 (Response & Trace)
+    │     │
+    │     ├─┬─► 阶段5 (Observability)  依赖: Trace
+    │     │ │
+    │     │ └─┬─► 阶段6 (MCP Server)  依赖: Query Engine, Response, Trace
+    │     │   │
+    │     │   └─┬─► 阶段7 (Dashboard)  依赖: Observability
+    │     │     │
+    │     │     └─┬─► 阶段8 (测试与优化)
+    │     │       │
+    └─────┴───────┴──────► Skills创建 (与各阶段并行)
+```
+
+---
+
+## 进度跟踪
+
+| 阶段 | 状态 | 完成日期 | 备注 |
+|------|------|----------|------|
+| 阶段0 | 🟡 进行中 | - | 基础设施 |
+| 阶段1 | ⬜ 待开始 | - | Libs层 |
+| 阶段2 | ⬜ 待开始 | - | Ingestion |
+| 阶段3 | ⬜ 待开始 | - | Query Engine |
+| 阶段4 | ⬜ 待开始 | - | Response & Trace |
+| 阶段5 | ⬜ 待开始 | - | Observability |
+| 阶段6 | ⬜ 待开始 | - | MCP Server |
+| 阶段7 | ⬜ 待开始 | - | Dashboard |
+| 阶段8 | ⬜ 待开始 | - | 测试与优化 |
+
+**图例**: ⬜ 待开始 | 🟡 进行中 | ✅ 已完成
+
+---
+
+## 验收标准总结
+
+### 功能验收
+- [ ] 可导入PDF文档并正确分块
+- [ ] 可执行混合检索(Dense+Sparse+RRF)
+- [ ] 可通过MCP协议调用
+- [ ] 可在Dashboard中查看数据和trace
+- [ ] 可运行评估并查看指标
+
+### 质量验收
+- [ ] 单元测试覆盖率 ≥ 80%
+- [ ] 所有集成测试通过
+- [ ] E2E测试通过
+- [ ] 代码符合本文档设计
+
+### 性能验收
+- [ ] Hit Rate@K ≥ 90%
+- [ ] MRR ≥ 0.8
+- [ ] 单次查询延迟 ≤ 3s (不含LLM生成)
+
+---
+
+## 备注
+
+1. **工时估算**: 基于个人开发，实际可能因经验水平有所调整
+2. **Skills创建**: 建议在对应阶段完成后立即创建，边开发边优化
+3. **测试策略**: 严格遵循TDD，先写测试再写实现
+4. **可观测性**: 从阶段1开始就应记录trace，不要等到最后
+5. **配置管理**: 所有可配置项都应在 settings.yaml 中
+
+---
+
+*此排期文档将随着开发进展持续更新*
+
