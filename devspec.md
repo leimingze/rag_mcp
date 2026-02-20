@@ -5,20 +5,20 @@
 ## rag策略与设计亮点
 - 分块策略：采用**智能分块**与上下文增强，为高质量检索打下基础。
   - 智能分块：摒弃机械的鼎昌气氛，采用语义感知的切分策略以保证完整语义。
-  - 上下文增强：为chunk注入文档元数据（标题、页码）和图片描述，确保检索时不仅匹配文本、还能感知上下文。#TODO:为什么需要感知上下文？
+  - 上下文增强：为chunk注入文档元数据（标题、页码）和图片描述，确保检索时不仅匹配文本、还能感知上下文。
   
   
 - 粗排召回：混合检索作为第一阶段快速召回
   - 结合**稀疏检索**利用关键词精确匹配，解决专有名词查找问题。
   - 结合**稠密检索**利用语义向量，解决同义词与模糊表达问题。
-  - 两者互补，通过rrf算法融合，确保查全率与查准率的平衡。#TODO:为什么rff能保证查全率和查准率？
+  - 两者互补，通过rrf算法融合，确保查全率与查准率的平衡。
 
 - 精排重排：在醋召回的基础上进行语义排序
   - 采用cross-encoder（专用重排模型）或llm rerank对候选集进行逐一打分，识别细微的语义差异。
 ## 全链路可插拔架构
 - LLM调用层可插拔：
   - 核心推理llm通过统一的抽象接口封装，支持多协议无缝切换。
-    - azure openai:企业级azure云端服务，符合合规与安全要求。#TODO:azure openai是什么？
+    - azure openai:企业级azure云端服务，符合合规与安全要求。
     - openai api:直接对接openai官方接口。
     - 本地部署：支持ollama、vllm等本地私有化部署方案。
     - 其他云服务：deepseek、anthropic claude、zhipu 等第三方api。
@@ -135,7 +135,7 @@
   - 存储后端：milvus。
   - all-in-one策略：包含index data(用于计算相似度的稠密向量稀疏向量)、payload data（完整的chunk原始文本及metadata）。
   - 幂等性设计：
-    - 为每个chunk生成全局唯一的chunk_id，生成算法采用确定的哈希组合：hash（source_path+section_path+content_hash）。#TODO:为什么要这么组合？
+    - 为每个chunk生成全局唯一的chunk_id，生成算法采用确定的哈希组合：hash（source_path+section_path+content_hash）。
     - 写入时词啊用upsert语义，确保同一文档即使被多次处理，数据库中也永远只有一份最新的副本。
   - 原子性：以batch为单位进行事务性写入。
 
@@ -159,7 +159,6 @@
     - 若底层索引支持且属于硬约束，则在dense/sparse检索阶段做pre-filter以缩小候选集、降低成本。
     - 无法前置的过滤（索引不支持或字段缺失/质量不稳）在rerank之前做，对缺失字段默认宽松包含，以避免误杀召回。
     - 软偏好（例如：更近期更好）不应硬过滤，而应作为排序信号在融合/重排序阶段加权。
-    #TODO:软偏好，硬偏好？
   - rerank backend（可插拔精排后端）
     - 目标：模块必须可关闭，并提供稳定的回退策略。
     - 后端选项：
@@ -316,7 +315,6 @@ mcp协议的tool返回格式支持多种内容类型（content数组），本项
 - 低侵入性 (Low Intrusiveness)：追踪逻辑与业务逻辑解耦，通过装饰器或回调机制注入，避免污染核心代码。
 - 轻量本地化 (Lightweight & Local)：采用结构化日志 + 本地 Dashboard 的方案，零外部依赖，开箱即用。
 ### 追踪数据结构
-#TODO:数据追踪
 trace_id：请求唯一标识
 timestamp：请求时间戳
 user_query：用户原始查询
@@ -949,3 +947,5 @@ smart-knowledge-hub/
 ├── pyproject.toml                       # Python 项目配置
 ├── requirements.txt                     # 依赖列表
 └── README.md                            # 项目说明
+
+
