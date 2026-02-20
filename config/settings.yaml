@@ -1,0 +1,273 @@
+# RAG MCP Configuration File
+# 全局配置文件，驱动所有可插拔组件
+
+# LLM 配置
+llm:
+  # 提供商选择: azure | openai | ollama | deepseek | anthropic | zhipu
+  provider: azure
+  # 模型名称
+  model: gpt-4o
+  # Azure OpenAI 特定配置
+  azure:
+    endpoint: ${AZURE_OPENAI_ENDPOINT}  # 从环境变量读取
+    api_version: "2024-08-01-preview"
+    deployment_name: gpt-4o
+  # OpenAI 特定配置
+  openai:
+    base_url: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
+    model: gpt-4o
+  # Ollama 特定配置 (本地)
+  ollama:
+    base_url: ${OLLAMA_BASE_URL:-http://localhost:11434}
+    model: llama3.2
+  # DeepSeek 特定配置
+  deepseek:
+    base_url: ${DEEPSEEK_BASE_URL:-https://api.deepseek.com}
+    model: deepseek-chat
+  # Anthropic Claude 特定配置
+  anthropic:
+    model: claude-sonnet-4-20250514
+  # Zhipu 特定配置
+  zhipu:
+    model: glm-4-plus
+  # 通用参数
+  temperature: 0.7
+  max_tokens: 2048
+  timeout: 60
+  max_retries: 3
+
+# Vision LLM 配置 (用于图像描述)
+vision_llm:
+  provider: azure  # azure | openai | anthropic
+  model: gpt-4o
+  azure:
+    deployment_name: gpt-4o
+  temperature: 0.5
+  max_tokens: 500
+
+# Embedding 配置
+embedding:
+  # 提供商选择: openai | azure | bge | ollama
+  provider: openai
+  model: text-embedding-3-small
+  # OpenAI 配置
+  openai:
+    model: text-embedding-3-small
+    dimensions: 1536
+  # Azure OpenAI 配置
+  azure:
+    deployment_name: text-embedding-3-small
+  # BGE 配置 (本地)
+  bge:
+    model_name: BAAI/bge-m3
+    device: cpu  # cpu | cuda | mps
+  # Ollama 配置
+  ollama:
+    model: nomic-embed-text
+  # 批处理配置
+  batch_size: 100
+  normalize: true
+
+# Vector Store 配置
+vector_store:
+  # 后端选择: chroma | qdrant | pinecone | milvus
+  backend: chroma
+  # Chroma 配置
+  chroma:
+    path: ./data/db/chroma
+    collection_name: rag_docs
+    # 索引配置
+    index_type: hnsw  # hnsw | ivf
+    ef_construction: 200
+    m: 16
+  # Qdrant 配置
+  qdrant:
+    url: ${QDRANT_URL:-http://localhost:6333}
+    api_key: ${QDRANT_API_KEY:-}
+    collection_name: rag_docs
+    vector_size: 1536
+    distance: cosine  # cosine | euclid | dot
+  # Pinecone 配置
+  pinecone:
+    api_key: ${PINECONE_API_KEY}
+    environment: ${PINECONE_ENVIRONMENT:-us-east-1-aws}
+    index_name: rag-docs
+    dimension: 1536
+    metric: cosine
+  # Milvus 配置
+  milvus:
+    host: ${MILVUS_HOST:-localhost}
+    port: ${MILVUS_PORT:-19530}
+    collection_name: rag_docs
+
+# 文本分割器配置
+splitter:
+  # 分割器类型: recursive | semantic
+  type: recursive
+  # Recursive 配置
+  recursive:
+    chunk_size: 1000
+    chunk_overlap: 200
+    separators: ["\n\n", "\n", "。", "！", "？", ".", "!", "?", " ", ""]
+    length_function: token  # token | character
+  # Semantic 配置
+  semantic:
+    buffer_size: 1
+    breakpoint_threshold: 0.6
+
+# 检索配置
+retrieval:
+  # 稀疏检索后端: bm25 | elasticsearch
+  sparse_backend: bm25
+  # 融合算法: rrf | weighted_sum
+  fusion_algorithm: rrf
+  # RRF 参数
+  rrf_k: 60
+  # 检索参数
+  top_k: 10  # 每个检索器返回的文档数
+  final_top_k: 5  # 最终返回的文档数
+  # 元数据过滤 (pre-filter)
+  filters: {}
+  # 软偏好 (post-filter boost)
+  boost_preferences:
+    - field: created_at
+      direction: desc  # desc | asc
+      weight: 0.1
+
+# Reranker 配置
+reranker:
+  # 后端选择: none | cross_encoder | llm | cohere
+  backend: none
+  # Cross-Encoder 配置
+  cross_encoder:
+    model_name: cross-encoder/ms-marco-MiniLM-L-6-v2
+    top_k: 5
+    score_threshold: 0.5
+  # LLM Reranker 配置
+  llm:
+    model: gpt-4o-mini
+    prompt_template: |
+      对以下文档按与查询的相关性排序。
+      查询: {query}
+      文档:
+      {documents}
+      仅返回排序后的文档ID列表，用逗号分隔。
+  # Cohere Reranker 配置
+  cohere:
+    api_key: ${COHERE_API_KEY}
+    model: rerank-v3.5
+    top_k: 5
+
+# 数据摄取配置
+ingestion:
+  # 文档加载器配置
+  loader:
+    # PDF 处理引擎: markitdown | pypdf
+    pdf_engine: markitdown
+    # 支持的文件类型
+    supported_types:
+      - pdf
+      - markdown
+      - txt
+      - docx
+  # 文档转换配置
+  transform:
+    # Chunk Refiner (LLM 重写)
+    chunk_refiner_enabled: false
+    # Metadata Enricher
+    metadata_enricher_enabled: true
+    # Image Captioner
+    image_captioner_enabled: true
+    max_image_size_mb: 5
+  # 批处理配置
+  batch_size: 10
+  # 幂等性配置
+  content_hash_algorithm: sha256  # sha256 | md5
+
+# 评估配置
+evaluation:
+  # 后端选择: ragas | deepeval | custom
+  backends: [ragas, custom_metrics]
+  # Ragas 配置
+  ragas:
+    metrics:
+      - faithfulness
+      - answer_relevancy
+      - context_precision
+      - context_recall
+  # DeepEval 配置
+  deepeval:
+    metrics:
+      - faithfulness
+      - relevancy
+      - correctness
+  # 自定义指标配置
+  custom_metrics:
+    hit_rate_k: 5  # Hit Rate@K
+    mrr: true      # Mean Reciprocal Rank
+
+# 可观测性配置
+observability:
+  # 日志配置
+  logging:
+    level: INFO  # DEBUG | INFO | WARNING | ERROR
+    format: json  # json | text
+    file: ./logs/app.log
+    rotation: 10 MB
+    retention: 30 days
+  # 追踪配置
+  tracing:
+    enabled: true
+    output_file: ./logs/traces.jsonl
+    # 记录的详细程度
+    detail_level: full  # full | summary | minimal
+  # Dashboard 配置
+  dashboard:
+    enabled: true
+    host: 0.0.0.0
+    port: 8501
+    title: "RAG MCP Dashboard"
+
+# MCP Server 配置
+mcp_server:
+  # 传输协议
+  transport: stdio  # stdio | sse
+  # 服务器信息
+  name: rag-mcp-server
+  version: 0.1.0
+  # 工具配置
+  tools:
+    - name: query_knowledge_hub
+      description: "查询知识库并返回相关文档"
+    - name: list_collections
+      description: "列出所有可用的知识库集合"
+    - name: get_document_summary
+      description: "获取指定文档的摘要信息"
+    - name: ingest_documents
+      description: "摄取文档到知识库"
+    - name: delete_documents
+      description: "从知识库删除文档"
+
+# 缓存配置
+cache:
+  # Embedding 缓存
+  embedding_cache:
+    enabled: true
+    path: ./cache/embeddings
+    max_size_mb: 1000
+  # 图片描述缓存
+  caption_cache:
+    enabled: true
+    path: ./cache/captions
+    max_size_mb: 500
+
+# 环境变量配置
+env:
+  # 数据目录
+  data_dir: ./data
+  # 配置目录
+  config_dir: ./config
+  # 日志目录
+  log_dir: ./logs
+  # 缓存目录
+  cache_dir: ./cache

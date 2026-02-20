@@ -1,0 +1,1172 @@
+{
+  "spec_file": "devspec.md",
+  "total_tasks": 100,
+  "completed": 4,
+  "in_progress": 0,
+  "pending": 96,
+  "tasks": [
+    {
+      "id": "task-001",
+      "title": "创建目录结构",
+      "file": "按规格创建完整目录",
+      "status": "completed",
+      "phase": "📋 阶段 0: 项目基础设施 (Day 1)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "所有目录存在",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-002",
+      "title": "配置项目管理",
+      "file": "pyproject.toml, requirements.txt",
+      "status": "completed",
+      "phase": "📋 阶段 0: 项目基础设施 (Day 1)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "可pip install",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-003",
+      "title": "配置文件",
+      "file": "config/settings.yaml (模板)",
+      "status": "completed",
+      "phase": "📋 阶段 0: 项目基础设施 (Day 1)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "结构符合spec",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-004",
+      "title": "测试框架",
+      "file": "pytest配置, tests/fixtures/",
+      "status": "completed",
+      "phase": "📋 阶段 0: 项目基础设施 (Day 1)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "pytest可运行",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-005",
+      "title": "配置加载器",
+      "file": "src/core/settings.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "可加载YAML",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-006",
+      "title": "核心类型定义",
+      "file": "src/core/types.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "Document/Chunk类可用",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-007",
+      "title": "单元测试",
+      "file": "tests/unit/test_settings.py, test_types.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-008",
+      "title": "LLM抽象基类",
+      "file": "src/libs/llm/base_llm.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "chat()方法定义",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-009",
+      "title": "Vision LLM抽象",
+      "file": "src/libs/llm/base_vision_llm.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "支持图片输入",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-010",
+      "title": "LLM工厂",
+      "file": "src/libs/llm/llm_factory.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "根据config实例化",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-011",
+      "title": "Azure OpenAI实现",
+      "file": "src/libs/llm/azure_llm.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "可调用GPT-4",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-012",
+      "title": "OpenAI实现",
+      "file": "src/libs/llm/openai_llm.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "可调用OpenAI",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-013",
+      "title": "Azure Vision实现",
+      "file": "src/libs/llm/azure_vision_llm.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "可识别图片",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-014",
+      "title": "单元测试",
+      "file": "tests/unit/test_*llm.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "Mock测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-015",
+      "title": "Embedding抽象",
+      "file": "src/libs/embedding/base_embedding.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "embed()方法定义",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-016",
+      "title": "Embedding工厂",
+      "file": "src/libs/embedding/embedding_factory.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "根据config实例化",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-017",
+      "title": "OpenAI实现",
+      "file": "src/libs/embedding/openai_embedding.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "可生成向量",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-018",
+      "title": "单元测试",
+      "file": "tests/unit/test_*embedding.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-019",
+      "title": "VectorStore抽象",
+      "file": "src/libs/vector_store/base_vector_store.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "upsert/query方法",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-020",
+      "title": "VectorStore工厂",
+      "file": "src/libs/vector_store/vector_store_factory.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "根据config实例化",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-021",
+      "title": "Chroma实现",
+      "file": "src/libs/vector_store/chroma_store.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "可存储/检索向量",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-022",
+      "title": "单元测试",
+      "file": "tests/unit/test_chroma_store.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-023",
+      "title": "Splitter抽象",
+      "file": "src/libs/splitter/base_splitter.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "split()方法定义",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-024",
+      "title": "Splitter工厂",
+      "file": "src/libs/splitter/splitter_factory.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "根据config实例化",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-025",
+      "title": "Recursive实现",
+      "file": "src/libs/splitter/recursive_splitter.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "可切分Markdown",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-026",
+      "title": "单元测试",
+      "file": "tests/unit/test_recursive_splitter.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-027",
+      "title": "Reranker抽象",
+      "file": "src/libs/reranker/base_reranker.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "rerank()方法定义",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-028",
+      "title": "Reranker工厂",
+      "file": "src/libs/reranker/reranker_factory.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "根据config实例化",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-029",
+      "title": "None实现",
+      "file": "src/libs/reranker/none_reranker.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "返回原排序",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-030",
+      "title": "单元测试",
+      "file": "tests/unit/test_*reranker.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-031",
+      "title": "Loader抽象",
+      "file": "src/libs/loader/base_loader.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "load()方法定义",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-032",
+      "title": "文件完整性检查",
+      "file": "src/libs/loader/file_integrity.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "SHA256哈希",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-033",
+      "title": "PDF Loader",
+      "file": "src/libs/loader/pdf_loader.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "MarkItDown集成",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-034",
+      "title": "单元测试",
+      "file": "tests/unit/test_pdf_loader.py",
+      "status": "pending",
+      "phase": "🧩 阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-035",
+      "title": "Document Chunker",
+      "file": "src/ingestion/chunking/document_chunker.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "Document→Chunks",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-036",
+      "title": "单元测试",
+      "file": "tests/unit/test_document_chunker.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-037",
+      "title": "Transform抽象",
+      "file": "src/ingestion/transform/base_transform.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "transform()方法",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-038",
+      "title": "Chunk Refiner",
+      "file": "src/ingestion/transform/chunk_refiner.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "LLM重写chunk",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-039",
+      "title": "Metadata Enricher",
+      "file": "src/ingestion/transform/metadata_enricher.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "提取title/summary",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-040",
+      "title": "Image Captioner",
+      "file": "src/ingestion/transform/image_captioner.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "Vision LLM描述图片",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-041",
+      "title": "单元测试",
+      "file": "tests/unit/test_transform*.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "Mock测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-042",
+      "title": "Dense Encoder",
+      "file": "src/ingestion/embedding/dense_encoder.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "调用Embedding API",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-043",
+      "title": "Sparse Encoder",
+      "file": "src/ingestion/embedding/sparse_encoder.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "BM25编码",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-044",
+      "title": "Batch Processor",
+      "file": "src/ingestion/embedding/batch_processor.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "批处理优化",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-045",
+      "title": "单元测试",
+      "file": "tests/unit/test_*encoder.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-046",
+      "title": "Vector Upserter",
+      "file": "src/ingestion/storage/vector_upserter.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "批量upsert",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-047",
+      "title": "BM25 Indexer",
+      "file": "src/ingestion/storage/bm25_indexer.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "构建倒排索引",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-048",
+      "title": "Image Storage",
+      "file": "src/ingestion/storage/image_storage.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "图片文件存储",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-049",
+      "title": "单元测试",
+      "file": "tests/unit/test_*storage.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-050",
+      "title": "Pipeline",
+      "file": "src/ingestion/pipeline.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "编排全流程",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-051",
+      "title": "Document Manager",
+      "file": "src/ingestion/document_manager.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "list/delete",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-052",
+      "title": "摄取脚本",
+      "file": "scripts/ingest.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "CLI入口",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-053",
+      "title": "集成测试",
+      "file": "tests/integration/test_ingestion_pipeline.py",
+      "status": "pending",
+      "phase": "📥 阶段 2: Ingestion Pipeline (Day 6-9)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "端到端测试",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-054",
+      "title": "Query Processor",
+      "file": "src/core/query_engine/query_processor.py",
+      "status": "pending",
+      "phase": "🔍 阶段 3: Query Engine (Day 10-13)",
+      "dependencies": [
+        "task-001"
+      ],
+      "description": "",
+      "acceptance_criteria": "关键词提取/查询扩展",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-055",
+      "title": "单元测试",
+      "file": "tests/unit/test_query_processor.py",
+      "status": "pending",
+      "phase": "🔍 阶段 3: Query Engine (Day 10-13)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-056",
+      "title": "Dense Retriever",
+      "file": "src/core/query_engine/dense_retriever.py",
+      "status": "pending",
+      "phase": "🔍 阶段 3: Query Engine (Day 10-13)",
+      "dependencies": [
+        "task-001"
+      ],
+      "description": "",
+      "acceptance_criteria": "向量检索",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-057",
+      "title": "Sparse Retriever",
+      "file": "src/core/query_engine/sparse_retriever.py",
+      "status": "pending",
+      "phase": "🔍 阶段 3: Query Engine (Day 10-13)",
+      "dependencies": [
+        "task-001"
+      ],
+      "description": "",
+      "acceptance_criteria": "BM25检索",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-058",
+      "title": "Fusion (RRF)",
+      "file": "src/core/query_engine/fusion.py",
+      "status": "pending",
+      "phase": "🔍 阶段 3: Query Engine (Day 10-13)",
+      "dependencies": [
+        "task-001"
+      ],
+      "description": "",
+      "acceptance_criteria": "RRF融合",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-059",
+      "title": "Hybrid Search",
+      "file": "src/core/query_engine/hybrid_search.py",
+      "status": "pending",
+      "phase": "🔍 阶段 3: Query Engine (Day 10-13)",
+      "dependencies": [
+        "task-001"
+      ],
+      "description": "",
+      "acceptance_criteria": "编排检索流程",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-060",
+      "title": "单元测试",
+      "file": "tests/unit/test_*retriever.py, test_fusion.py",
+      "status": "pending",
+      "phase": "🔍 阶段 3: Query Engine (Day 10-13)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-061",
+      "title": "集成测试",
+      "file": "tests/integration/test_hybrid_search.py",
+      "status": "pending",
+      "phase": "🔍 阶段 3: Query Engine (Day 10-13)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "端到端测试",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-062",
+      "title": "Reranker实现",
+      "file": "src/core/query_engine/reranker.py",
+      "status": "pending",
+      "phase": "🔍 阶段 3: Query Engine (Day 10-13)",
+      "dependencies": [
+        "task-001"
+      ],
+      "description": "",
+      "acceptance_criteria": "调用Reranker抽象",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-063",
+      "title": "单元测试",
+      "file": "tests/unit/test_reranker_fallback.py",
+      "status": "pending",
+      "phase": "🔍 阶段 3: Query Engine (Day 10-13)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "回退测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-064",
+      "title": "Citation Generator",
+      "file": "src/core/response/citation_generator.py",
+      "status": "pending",
+      "phase": "📤 阶段 4: Response & Trace (Day 14-15)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "生成引用",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-065",
+      "title": "Multimodal Assembler",
+      "file": "src/core/response/multimodal_assembler.py",
+      "status": "pending",
+      "phase": "📤 阶段 4: Response & Trace (Day 14-15)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "组装图文",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-066",
+      "title": "Response Builder",
+      "file": "src/core/response/response_builder.py",
+      "status": "pending",
+      "phase": "📤 阶段 4: Response & Trace (Day 14-15)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "构建最终响应",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-067",
+      "title": "单元测试",
+      "file": "tests/unit/test_response_builder.py",
+      "status": "pending",
+      "phase": "📤 阶段 4: Response & Trace (Day 14-15)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-068",
+      "title": "Trace Context",
+      "file": "src/core/trace/trace_context.py",
+      "status": "pending",
+      "phase": "📤 阶段 4: Response & Trace (Day 14-15)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "记录阶段",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-069",
+      "title": "Trace Collector",
+      "file": "src/core/trace/trace_collector.py",
+      "status": "pending",
+      "phase": "📤 阶段 4: Response & Trace (Day 14-15)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "JSON Lines输出",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-070",
+      "title": "单元测试",
+      "file": "tests/unit/test_trace_context.py, test_jsonl_logger.py",
+      "status": "pending",
+      "phase": "📤 阶段 4: Response & Trace (Day 14-15)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-071",
+      "title": "结构化Logger",
+      "file": "src/observability/logger.py",
+      "status": "pending",
+      "phase": "📊 阶段 5: Observability 基础 (Day 16-17)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "JSON Formatter",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-072",
+      "title": "Evaluator抽象",
+      "file": "src/libs/evaluator/base_evaluator.py",
+      "status": "pending",
+      "phase": "📊 阶段 5: Observability 基础 (Day 16-17)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "evaluate()方法",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-073",
+      "title": "Evaluator工厂",
+      "file": "src/libs/evaluator/evaluator_factory.py",
+      "status": "pending",
+      "phase": "📊 阶段 5: Observability 基础 (Day 16-17)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "根据config实例化",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-074",
+      "title": "Ragas实现",
+      "file": "src/libs/evaluator/ragas_evaluator.py",
+      "status": "pending",
+      "phase": "📊 阶段 5: Observability 基础 (Day 16-17)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "Ragas集成",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-075",
+      "title": "Custom实现",
+      "file": "src/libs/evaluator/custom_evaluator.py",
+      "status": "pending",
+      "phase": "📊 阶段 5: Observability 基础 (Day 16-17)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "自定义指标",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-076",
+      "title": "Composite Evaluator",
+      "file": "src/observability/evaluation/composite_evaluator.py",
+      "status": "pending",
+      "phase": "📊 阶段 5: Observability 基础 (Day 16-17)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "多评估器组合",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-077",
+      "title": "Eval Runner",
+      "file": "src/observability/evaluation/eval_runner.py",
+      "status": "pending",
+      "phase": "📊 阶段 5: Observability 基础 (Day 16-17)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "执行评估",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-078",
+      "title": "评估脚本",
+      "file": "scripts/evaluate.py",
+      "status": "pending",
+      "phase": "📊 阶段 5: Observability 基础 (Day 16-17)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "CLI入口",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-079",
+      "title": "Protocol Handler",
+      "file": "src/mcp_server/protocol_handler.py",
+      "status": "pending",
+      "phase": "🔌 阶段 6: MCP Server (Day 18-20)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "JSON-RPC 2.0处理",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-080",
+      "title": "Server入口",
+      "file": "src/mcp_server/server.py",
+      "status": "pending",
+      "phase": "🔌 阶段 6: MCP Server (Day 18-20)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "Stdio Transport",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-081",
+      "title": "main.py",
+      "file": "main.py",
+      "status": "pending",
+      "phase": "🔌 阶段 6: MCP Server (Day 18-20)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "启动入口",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-082",
+      "title": "query_knowledge_hub",
+      "file": "src/mcp_server/tools/query_knowledge_hub.py",
+      "status": "pending",
+      "phase": "🔌 阶段 6: MCP Server (Day 18-20)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "主检索工具",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-083",
+      "title": "list_collections",
+      "file": "src/mcp_server/tools/list_collections.py",
+      "status": "pending",
+      "phase": "🔌 阶段 6: MCP Server (Day 18-20)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "列集合工具",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-084",
+      "title": "get_document_summary",
+      "file": "src/mcp_server/tools/get_document_summary.py",
+      "status": "pending",
+      "phase": "🔌 阶段 6: MCP Server (Day 18-20)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "文档摘要工具",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-085",
+      "title": "单元测试",
+      "file": "tests/unit/test_*tools.py",
+      "status": "pending",
+      "phase": "🔌 阶段 6: MCP Server (Day 18-20)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "测试通过",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-086",
+      "title": "集成测试",
+      "file": "tests/integration/test_mcp_server.py",
+      "status": "pending",
+      "phase": "🔌 阶段 6: MCP Server (Day 18-20)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "MCP协议测试",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-087",
+      "title": "Trace Service",
+      "file": "src/observability/dashboard/services/trace_service.py",
+      "status": "pending",
+      "phase": "🖥️ 阶段 7: Dashboard (Day 21-24)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "读取traces.jsonl",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-088",
+      "title": "Data Service",
+      "file": "src/observability/dashboard/services/data_service.py",
+      "status": "pending",
+      "phase": "🖥️ 阶段 7: Dashboard (Day 21-24)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "读取向量库",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-089",
+      "title": "Config Service",
+      "file": "src/observability/dashboard/services/config_service.py",
+      "status": "pending",
+      "phase": "🖥️ 阶段 7: Dashboard (Day 21-24)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "读取配置",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-090",
+      "title": "Overview",
+      "file": "src/observability/dashboard/pages/overview.py",
+      "status": "pending",
+      "phase": "🖥️ 阶段 7: Dashboard (Day 21-24)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "系统总览",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-091",
+      "title": "Data Browser",
+      "file": "src/observability/dashboard/pages/data_browser.py",
+      "status": "pending",
+      "phase": "🖥️ 阶段 7: Dashboard (Day 21-24)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "数据浏览",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-092",
+      "title": "Ingestion Manager",
+      "file": "src/observability/dashboard/pages/ingestion_manager.py",
+      "status": "pending",
+      "phase": "🖥️ 阶段 7: Dashboard (Day 21-24)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "摄取管理",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-093",
+      "title": "Ingestion Traces",
+      "file": "src/observability/dashboard/pages/ingestion_traces.py",
+      "status": "pending",
+      "phase": "🖥️ 阶段 7: Dashboard (Day 21-24)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "摄取追踪",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-094",
+      "title": "Query Traces",
+      "file": "src/observability/dashboard/pages/query_traces.py",
+      "status": "pending",
+      "phase": "🖥️ 阶段 7: Dashboard (Day 21-24)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "查询追踪",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-095",
+      "title": "Evaluation Panel",
+      "file": "src/observability/dashboard/pages/evaluation_panel.py",
+      "status": "pending",
+      "phase": "🖥️ 阶段 7: Dashboard (Day 21-24)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "评估面板",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-096",
+      "title": "App入口",
+      "file": "src/observability/dashboard/app.py",
+      "status": "pending",
+      "phase": "🖥️ 阶段 7: Dashboard (Day 21-24)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "页面导航",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-097",
+      "title": "启动脚本",
+      "file": "scripts/start_dashboard.py",
+      "status": "pending",
+      "phase": "🖥️ 阶段 7: Dashboard (Day 21-24)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "CLI入口",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-098",
+      "title": "数据摄取E2E",
+      "file": "tests/e2e/test_data_ingestion.py",
+      "status": "pending",
+      "phase": "✅ 阶段 8: 测试与优化 (Day 25-27)",
+      "dependencies": [
+        "task-001",
+        "task-002"
+      ],
+      "description": "",
+      "acceptance_criteria": "完整流程",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-099",
+      "title": "召回E2E",
+      "file": "tests/e2e/test_recall.py",
+      "status": "pending",
+      "phase": "✅ 阶段 8: 测试与优化 (Day 25-27)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "召回测试",
+      "estimated_hours": 0
+    },
+    {
+      "id": "task-100",
+      "title": "MCP Client",
+      "file": "tests/e2e/test_mcp_client.py",
+      "status": "pending",
+      "phase": "✅ 阶段 8: 测试与优化 (Day 25-27)",
+      "dependencies": [],
+      "description": "",
+      "acceptance_criteria": "模拟客户端",
+      "estimated_hours": 0
+    }
+  ]
+}

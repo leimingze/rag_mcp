@@ -1,0 +1,23 @@
+{
+  "task_id": "task-001",
+  "task_title": "创建目录结构",
+  "file": "按规格创建完整目录",
+  "total_rounds": 1,
+  "success": false,
+  "rounds": [
+    {
+      "round": 1,
+      "success": false,
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": [
+        "pytest not found"
+      ],
+      "fix_attempts": [
+        "Attempt to fix 1 errors"
+      ],
+      "timestamp": ""
+    }
+  ]
+}
