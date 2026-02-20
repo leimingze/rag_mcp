@@ -1,6 +1,6 @@
 ---
 name: auto-coder
-description: Autonomous code generation agent for spec-driven development. Use when user says "auto code", "auto dev", "自动开发", "自动写代码", "autopilot", "一键开发" or wants to automatically implement tasks from a specification document like devspec.md. Reads spec, selects next task, generates code + tests, runs tests with auto-fix (max 3 rounds), updates spec status, and optionally commits to git.
+description: Autonomous code generation agent for spec-driven development. Use when user says "auto code", "auto dev", "自动开发", "自动写代码", "autopilot", "一键开发" or wants to automatically implement tasks from a specification document like devspec.md. Reads spec, selects next task, generates code + tests, runs tests with auto-fix (max 3 rounds), updates spec status, documents completion, and optionally commits to git.
 ---
 
 # Auto-Coder
@@ -126,6 +126,58 @@ python3 scripts/persist.py --task <task_json> --spec devspec.md [--commit]
    - 创建原子 commit：`git commit -m "feat(<module>): <task_title>"`
 4. 提示用户：`Task completed. Commit created. Next task?`
 
+### 6. Document Completion（文档记录）
+
+使用 `scripts/document.py` 记录任务完成详情：
+
+```bash
+python3 scripts/document.py --task <task_json> --spec devspec.md [--dry-run]
+```
+
+**功能**：
+1. **代码分析**：使用 AST 模块分析创建的文件，提取类/函数信息
+2. **测试报告**：读取 `specs/test_report_*.json` 获取测试结果
+3. **生成记录**：生成结构化的 Markdown 完成记录
+4. **插入文档**：将记录插入到 devspec.md 对应阶段的里程碑前
+5. **更新索引**：在 `task_index.json` 中添加 `documented: true` 标记
+
+**记录格式**：
+```markdown
+<details>
+<summary>✅ 任务标题 - 完成详情</summary>
+
+### 任务目标
+验收标准描述
+
+### 实现内容
+#### 创建的文件
+* `src/core/settings.py`
+
+#### 实现的类/函数
+* **类**: `Settings`
+  * 方法: `load_settings()` -> Dict
+  * 方法: `validate_settings()` -> None
+
+### 验收标准验证
+* ✅ 测试通过: 3 个测试用例
+
+### 测试方法
+```bash
+pytest tests/unit/test_settings.py -v
+```
+
+**测试轮次**: 1 轮
+**测试结果**: ✅ 通过
+**通过率**: 100%
+
+### 实现备注
+完成时间: 2026-02-20T22:30:00
+
+</details>
+```
+
+**幂等性**：重复执行不会产生重复记录，通过检查 `documented` 标记和 devspec.md 中的摘要行判断。
+
 ## Guardrails（安全约束）
 
 1. **原子提交**：每个任务一个 commit，消息格式 `feat(<module>): <description>`
@@ -158,6 +210,9 @@ Test & Fix → pytest → 失败? → 修复 (max 3轮)
 Persist → 更新 devspec.md → [可选] git commit
     │
     ▼
+Document → 生成完成记录 → 插入 devspec.md → 更新 task_index.json
+    │
+    ▼
 提示用户 → "Next task?" (继续/停止)
 ```
 
@@ -178,5 +233,7 @@ Persist → 更新 devspec.md → [可选] git commit
 - **scripts/implement.py**: 代码生成脚本
 - **scripts/test_fix.py**: 测试与修复脚本
 - **scripts/persist.py**: 持久化脚本
+- **scripts/document.py**: 文档记录脚本（新增）
+- **scripts/code_analyzer.py**: 代码分析工具，使用 AST 提取类/函数信息（新增）
 - **references/spec-format.md**: 规格文档格式规范
 - **references/code-standards.md**: 代码编写标准
