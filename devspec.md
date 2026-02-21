@@ -1065,9 +1065,9 @@ smart-knowledge-hub/
 
 | 状态 | 任务 | 文件 | 工时 | 验收标准 |
 |------|------|------|------|----------|
-| [ ] | 配置加载器 | src/core/settings.py | 2h | 可加载YAML |
-| [ ] | 核心类型定义 | src/core/types.py | 2h | Document/Chunk类可用 |
-| [ ] | 单元测试 | tests/unit/test_settings.py, test_types.py | 2h | 测试通过 |
+| [x] | 配置加载器 | src/core/settings.py | 2h | 可加载YAML |
+| [x] | 核心类型定义 | src/core/types.py | 2h | Document/Chunk类可用 |
+| [x] | 单元测试 | tests/unit/test_settings.py, test_types.py | 2h | 测试通过 |
 
 #### 1.2 LLM 抽象 (优先级: 高)
 
@@ -1126,6 +1126,272 @@ smart-knowledge-hub/
 | [ ] | PDF Loader | src/libs/loader/pdf_loader.py | 4h | MarkItDown集成 |
 | [ ] | 单元测试 | tests/unit/test_pdf_loader.py | 2h | 测试通过 |
 
+
+#### 完成记录
+
+<details>
+<summary>✅ 配置加载器 - 完成详情</summary>
+
+### 任务目标
+可加载YAML
+
+### 实现内容
+
+#### 创建的文件
+* `src/core/settings.py`
+* `tests/unit/test_settings.py`
+
+#### 实现的类/函数
+* **文件**: `src/core/settings.py`
+  * **类**: `Settings`
+    * 方法:
+      * `__init__(self, config_path)`
+      * `_find_and_load_config(self) -> None`
+      * `_load(self) -> None`
+      * `_expand_env_vars(self, config) -> Any`
+      * `_validate_config(self) -> None`
+      * `get(self, key, default) -> Any`
+      * `get_section(self, section) -> Dict[str, Any]`
+      * `llm_config(self) -> Dict[str, Any]`
+      * `embedding_config(self) -> Dict[str, Any]`
+      * `vector_store_config(self) -> Dict[str, Any]`
+      * `retrieval_config(self) -> Dict[str, Any]`
+      * `reranker_config(self) -> Dict[str, Any]`
+      * `__repr__(self) -> str`
+  * **函数**: `load_settings(config_path) -> Settings`
+  * **函数**: `reload_settings(config_path) -> Settings`
+
+* **文件**: `tests/unit/test_settings.py`
+  * **类**: `TestSettings`
+    * 方法:
+      * `temp_config_file(self)`
+      * `settings(self, temp_config_file)`
+      * `test_init_with_path(self, temp_config_file)`
+      * `test_init_loads_config(self, settings)`
+      * `test_env_var_expansion(self)`
+      * `test_get_method(self, settings)`
+      * `test_get_section(self, settings)`
+      * `test_get_section_nonexistent(self, settings)`
+      * `test_property_accessors(self, settings)`
+      * `test_missing_required_section(self)`
+      * `test_file_not_found(self)`
+      * `test_repr(self, settings)`
+  * **类**: `TestGlobalSettings`
+    * 方法:
+      * `test_load_settings_singleton(self)`
+      * `test_reload_settings(self)`
+
+### 验收标准验证
+* ✅ 可加载YAML
+
+### 测试方法
+```bash
+pytest tests/unit/test_settings.py -v
+```
+
+### 实现备注
+完成时间: 2026-02-21T00:00:31.504646
+
+</details>
+
+#### 完成记录
+
+<details>
+<summary>✅ 核心类型定义 - 完成详情</summary>
+
+### 任务目标
+Document/Chunk类可用
+
+### 实现内容
+
+#### 创建的文件
+* `src/core/types.py`
+* `tests/unit/test_types.py`
+
+#### 实现的类/函数
+* **文件**: `src/core/types.py`
+  * **类**: `DocumentType`(Enum)
+  * **类**: `DocumentMetadata`
+    * 方法:
+      * `to_dict(self) -> Dict[str, Any]`
+  * **类**: `Document`
+    * 方法:
+      * `__post_init__(self)`
+      * `char_count(self) -> int`
+      * `word_count(self) -> int`
+      * `to_dict(self) -> Dict[str, Any]`
+  * **类**: `ChunkMetadata`
+    * 方法:
+      * `length(self) -> int`
+      * `to_dict(self) -> Dict[str, Any]`
+  * **类**: `Chunk`
+    * 方法:
+      * `__post_init__(self)`
+      * `char_count(self) -> int`
+      * `word_count(self) -> int`
+      * `to_dict(self) -> Dict[str, Any]`
+      * `get_display_text(self) -> str`
+  * **类**: `ChunkRecord`
+    * 方法:
+      * `__post_init__(self)`
+      * `vector_id(self) -> str`
+      * `to_dict(self) -> Dict[str, Any]`
+  * **函数**: `create_chunk(content, doc_id, source, chunk_index, start_offset, end_offset) -> Chunk`
+
+* **文件**: `tests/unit/test_types.py`
+  * **类**: `TestDocumentType`
+    * 方法:
+      * `test_values(self)`
+  * **类**: `TestDocumentMetadata`
+    * 方法:
+      * `metadata(self)`
+      * `test_creation(self, metadata)`
+      * `test_to_dict(self, metadata)`
+  * **类**: `TestDocument`
+    * 方法:
+      * `metadata(self)`
+      * `document(self, metadata)`
+      * `test_creation(self, document)`
+      * `test_doc_id_generation(self, document)`
+      * `test_char_count(self, document)`
+      * `test_word_count(self, document)`
+      * `test_to_dict(self, document)`
+  * **类**: `TestChunkMetadata`
+    * 方法:
+      * `chunk_metadata(self)`
+      * `test_creation(self, chunk_metadata)`
+      * `test_length_property(self, chunk_metadata)`
+      * `test_to_dict(self, chunk_metadata)`
+  * **类**: `TestChunk`
+    * 方法:
+      * `chunk_metadata(self)`
+      * `chunk(self, chunk_metadata)`
+      * `test_creation(self, chunk)`
+      * `test_content_hash_generation(self, chunk)`
+      * `test_char_count(self, chunk)`
+      * `test_word_count(self, chunk)`
+      * `test_get_display_text_with_title(self, chunk)`
+      * `test_get_display_text_without_title(self, chunk)`
+      * `test_to_dict(self, chunk)`
+  * **类**: `TestChunkRecord`
+    * 方法:
+      * `chunk(self)`
+      * `chunk_record(self, chunk)`
+      * `test_creation(self, chunk_record)`
+      * `test_vector_id(self, chunk_record)`
+      * `test_to_dict(self, chunk_record)`
+  * **类**: `TestCreateChunk`
+    * 方法:
+      * `test_create_basic_chunk(self)`
+      * `test_create_chunk_with_extra_metadata(self)`
+
+### 验收标准验证
+* ✅ Document/Chunk类可用
+
+### 测试方法
+```bash
+pytest tests/unit/test_types.py -v
+```
+
+### 实现备注
+完成时间: 2026-02-21T11:49:57.560776
+
+</details>
+
+#### 完成记录
+
+<details>
+<summary>✅ 单元测试 - 完成详情</summary>
+
+### 任务目标
+测试通过
+
+### 实现内容
+
+#### 创建的文件
+* `tests/unit/test_settings.py`
+* `tests/unit/test_types.py`
+
+#### 实现的类/函数
+* **文件**: `tests/unit/test_settings.py`
+  * **类**: `TestSettings`
+    * 方法:
+      * `temp_config_file(self)`
+      * `settings(self, temp_config_file)`
+      * `test_init_with_path(self, temp_config_file)`
+      * `test_init_loads_config(self, settings)`
+      * `test_env_var_expansion(self)`
+      * `test_get_method(self, settings)`
+      * `test_get_section(self, settings)`
+      * `test_get_section_nonexistent(self, settings)`
+      * `test_property_accessors(self, settings)`
+      * `test_missing_required_section(self)`
+      * `test_file_not_found(self)`
+      * `test_repr(self, settings)`
+  * **类**: `TestGlobalSettings`
+    * 方法:
+      * `test_load_settings_singleton(self)`
+      * `test_reload_settings(self)`
+
+* **文件**: `tests/unit/test_types.py`
+  * **类**: `TestDocumentType`
+    * 方法:
+      * `test_values(self)`
+  * **类**: `TestDocumentMetadata`
+    * 方法:
+      * `metadata(self)`
+      * `test_creation(self, metadata)`
+      * `test_to_dict(self, metadata)`
+  * **类**: `TestDocument`
+    * 方法:
+      * `metadata(self)`
+      * `document(self, metadata)`
+      * `test_creation(self, document)`
+      * `test_doc_id_generation(self, document)`
+      * `test_char_count(self, document)`
+      * `test_word_count(self, document)`
+      * `test_to_dict(self, document)`
+  * **类**: `TestChunkMetadata`
+    * 方法:
+      * `chunk_metadata(self)`
+      * `test_creation(self, chunk_metadata)`
+      * `test_length_property(self, chunk_metadata)`
+      * `test_to_dict(self, chunk_metadata)`
+  * **类**: `TestChunk`
+    * 方法:
+      * `chunk_metadata(self)`
+      * `chunk(self, chunk_metadata)`
+      * `test_creation(self, chunk)`
+      * `test_content_hash_generation(self, chunk)`
+      * `test_char_count(self, chunk)`
+      * `test_word_count(self, chunk)`
+      * `test_get_display_text_with_title(self, chunk)`
+      * `test_get_display_text_without_title(self, chunk)`
+      * `test_to_dict(self, chunk)`
+  * **类**: `TestChunkRecord`
+    * 方法:
+      * `chunk(self)`
+      * `chunk_record(self, chunk)`
+      * `test_creation(self, chunk_record)`
+      * `test_vector_id(self, chunk_record)`
+      * `test_to_dict(self, chunk_record)`
+  * **类**: `TestCreateChunk`
+    * 方法:
+      * `test_create_basic_chunk(self)`
+      * `test_create_chunk_with_extra_metadata(self)`
+
+### 验收标准验证
+* ✅ 测试通过
+
+### 测试方法
+```bash
+pytest tests/unit/test_test_settings.py, test_types.py -v
+```
+
+### 实现备注
+完成时间: 2026-02-21T11:50:32.360311
+
+</details>
 **里程碑 M1**: 所有 Libs 层模块通过单元测试，工厂模式可正确实例化
 
 ---
@@ -1434,15 +1700,15 @@ smart-knowledge-hub/
 
 | 阶段 | 状态 | 完成日期 | 备注 |
 |------|------|----------|------|
-| 阶段0 | ✅ 已完成 | 2026-02-20 | 基础设施 |
-| 阶段1 | ⬜ 待开始 | - | Libs层 |
-| 阶段2 | ⬜ 待开始 | - | Ingestion |
-| 阶段3 | ⬜ 待开始 | - | Query Engine |
-| 阶段4 | ⬜ 待开始 | - | Response & Trace |
-| 阶段5 | ⬜ 待开始 | - | Observability |
-| 阶段6 | ⬜ 待开始 | - | MCP Server |
-| 阶段7 | ⬜ 待开始 | - | Dashboard |
-| 阶段8 | ⬜ 待开始 | - | 测试与优化 |
+| 阶段0 | ✅ 已完成| 2026-02-21| 基础设施|
+| 阶段1 | 🟡 进行中| 2026-02-21| Libs层 (3/30)|
+| 阶段2 | ⬜ 待开始| -| Ingestion|
+| 阶段3 | ⬜ 待开始| -| Query Engine|
+| 阶段4 | ⬜ 待开始| -| Response & Trace|
+| 阶段5 | ⬜ 待开始| -| Observability|
+| 阶段6 | ⬜ 待开始| -| MCP Server|
+| 阶段7 | ⬜ 待开始| -| Dashboard|
+| 阶段8 | ⬜ 待开始| -| 测试与优化|
 
 **图例**: ⬜ 待开始 | 🟡 进行中 | ✅ 已完成
 

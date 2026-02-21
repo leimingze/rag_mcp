@@ -18,6 +18,7 @@ import os
 import re
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -54,6 +55,10 @@ class SpecUpdater:
 
         # 2. 更新 task_index.json
         if not self._update_index_file(task, new_status):
+            return False
+
+        # 3. 更新进度跟踪表格
+        if not self._update_progress_table():
             return False
 
         print(f"✅ 任务状态已更新")
@@ -115,6 +120,109 @@ class SpecUpdater:
             json.dump(index, f, ensure_ascii=False, indent=2)
 
         print(f"   ✅ 更新: {self.index_path}")
+        return True
+
+    def _update_progress_table(self) -> bool:
+        """更新进度跟踪表格
+
+        根据各阶段任务完成情况，更新进度跟踪表格中的状态。
+
+        Returns:
+            是否更新成功
+        """
+        if not self.index_path.exists():
+            return True  # 如果索引不存在，跳过
+
+        # 读取任务索引
+        with open(self.index_path, "r", encoding="utf-8") as f:
+            index = json.load(f)
+
+        # 按阶段统计任务
+        phase_stats: Dict[str, Dict[str, int]] = {}
+        for task in index["tasks"]:
+            phase = task.get("phase", "未知")
+            if phase not in phase_stats:
+                phase_stats[phase] = {"total": 0, "completed": 0, "in_progress": 0}
+            phase_stats[phase]["total"] += 1
+            if task["status"] == "completed":
+                phase_stats[phase]["completed"] += 1
+            elif task["status"] == "in_progress":
+                phase_stats[phase]["in_progress"] += 1
+
+        # 读取 spec 文件
+        content = self.spec_path.read_text(encoding="utf-8")
+
+        # 更新进度跟踪表格
+        today = datetime.now().strftime("%Y-%m-%d")
+
+        # 阶段映射：从 phase 名称到表格中的行名
+        phase_mapping = {
+            "阶段 0: 项目基础设施 (Day 1)": "阶段0",
+            "阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)": "阶段1",
+            "阶段 2: Ingestion Pipeline (Day 6-9)": "阶段2",
+            "阶段 3: Query Engine (Day 10-13)": "阶段3",
+            "阶段 4: Response & Trace (Day 14-15)": "阶段4",
+            "阶段 5: Observability 基础 (Day 16-17)": "阶段5",
+            "阶段 6: MCP Server (Day 18-20)": "阶段6",
+            "阶段 7: Dashboard (Day 21-24)": "阶段7",
+            "阶段 8: 测试与优化 (Day 25-27)": "阶段8",
+        }
+
+        # 原始备注映射（保留原有描述）
+        original_notes = {
+            "阶段0": "基础设施",
+            "阶段1": "Libs层",
+            "阶段2": "Ingestion",
+            "阶段3": "Query Engine",
+            "阶段4": "Response & Trace",
+            "阶段5": "Observability",
+            "阶段6": "MCP Server",
+            "阶段7": "Dashboard",
+            "阶段8": "测试与优化",
+        }
+
+        for phase_full, phase_short in phase_mapping.items():
+            if phase_full not in phase_stats:
+                continue
+
+            stats = phase_stats[phase_full]
+            original_note = original_notes.get(phase_short, "")
+
+            # 确定状态
+            if stats["completed"] == stats["total"]:
+                status = "✅ 已完成"
+                date = today
+            elif stats["completed"] > 0 or stats["in_progress"] > 0:
+                status = "🟡 进行中"
+                date = today
+            else:
+                status = "⬜ 待开始"
+                date = "-"
+
+            # 生成备注（保留原描述，添加进度）
+            if stats["completed"] == stats["total"] and stats["total"] > 0:
+                note = original_note
+            elif stats["completed"] > 0 or stats["in_progress"] > 0:
+                note = f"{original_note} ({stats['completed']}/{stats['total']})"
+            else:
+                note = original_note
+
+            # 匹配并替换表格行
+            # 格式：| 阶段1 | ⬜ 待开始 | - | Libs层 |
+            pattern = re.compile(
+                rf'(\|\s*{re.escape(phase_short)}\s*\|\s*)[^\|]+(\s*\|\s*)[^\|]+(\s*\|\s*)[^\|]+(\s*\|)'
+            )
+
+            def replacement(match):
+                return f"{match.group(1)}{status}{match.group(2)}{date}{match.group(3)}{note}{match.group(4)}"
+
+            new_content = pattern.sub(replacement, content)
+            if new_content != content:
+                content = new_content
+                print(f"   ✅ 更新进度: {phase_short} -> {status}")
+
+        # 写回文件
+        self.spec_path.write_text(content, encoding="utf-8")
         return True
 
 

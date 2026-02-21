@@ -1,9 +1,9 @@
 {
   "spec_file": "devspec.md",
   "total_tasks": 100,
-  "completed": 4,
+  "completed": 7,
   "in_progress": 0,
-  "pending": 96,
+  "pending": 93,
   "tasks": [
     {
       "id": "task-001",
@@ -24,7 +24,7 @@
       "phase": "阶段 0: 项目基础设施 (Day 1)",
       "dependencies": [],
       "description": "",
-      "acceptance_criteria": "可pip install",
+      "acceptance_criteria": "可 pip install",
       "estimated_hours": 0
     },
     {
@@ -35,25 +35,25 @@
       "phase": "阶段 0: 项目基础设施 (Day 1)",
       "dependencies": [],
       "description": "",
-      "acceptance_criteria": "结构符合spec",
+      "acceptance_criteria": "结构符合 spec",
       "estimated_hours": 0
     },
     {
       "id": "task-004",
       "title": "测试框架",
-      "file": "pytest配置, tests/fixtures/",
+      "file": "pytest 配置, tests/fixtures/",
       "status": "completed",
       "phase": "阶段 0: 项目基础设施 (Day 1)",
       "dependencies": [],
       "description": "",
-      "acceptance_criteria": "pytest可运行",
+      "acceptance_criteria": "pytest 可运行",
       "estimated_hours": 0
     },
     {
       "id": "task-005",
       "title": "配置加载器",
       "file": "src/core/settings.py",
-      "status": "pending",
+      "status": "completed",
       "phase": "阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
       "dependencies": [],
       "description": "",
@@ -64,23 +64,27 @@
       "id": "task-006",
       "title": "核心类型定义",
       "file": "src/core/types.py",
-      "status": "pending",
+      "status": "completed",
       "phase": "阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
       "dependencies": [],
       "description": "",
       "acceptance_criteria": "Document/Chunk类可用",
-      "estimated_hours": 0
+      "estimated_hours": 0,
+      "documented": true,
+      "documented_at": "2026-02-21T11:49:57.568346"
     },
     {
       "id": "task-007",
       "title": "单元测试",
       "file": "tests/unit/test_settings.py, test_types.py",
-      "status": "pending",
+      "status": "completed",
       "phase": "阶段 1: Libs 层 - 可插拔抽象 (Day 2-5)",
       "dependencies": [],
       "description": "",
       "acceptance_criteria": "测试通过",
-      "estimated_hours": 0
+      "estimated_hours": 0,
+      "documented": true,
+      "documented_at": "2026-02-21T11:50:32.367435"
     },
     {
       "id": "task-008",
